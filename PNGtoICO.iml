@@ -7,7 +7,6 @@
     </content>
     <orderEntry type="inheritedJdk" />
     <orderEntry type="sourceFolder" forTests="false" />
-    <orderEntry type="library" name="magick-1.6-b3" level="project" />
     <orderEntry type="library" name="image4j-0.7zensight1" level="project" />
   </component>
 </module>
