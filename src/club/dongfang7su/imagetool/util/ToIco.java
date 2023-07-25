@@ -6,8 +6,6 @@ import javax.imageio.ImageIO;
 import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
-import java.util.ArrayList;
-import java.util.List;
 
 public class ToIco {
 
@@ -15,23 +13,37 @@ public class ToIco {
         try {
             BufferedImage image = ImageIO.read(new File(filePath));
 
-            // Resize image to 256x256
-            BufferedImage resizedImage = resizeImage(image);
+            // 文件格式支持
+            String[] extensionName = {
+                    ".png",
+                    ".jpg"
+            };
 
-            // Create a list to hold different size images for ICO
-            List<BufferedImage> imageList = new ArrayList<>();
-            imageList.add(resizedImage);
+            //  导出图像尺寸
+            int[] sizeNumber = {
+                    512,
+                    256,
+                    128,
+                    64,
+                    32,
+                    16
+            };
 
-            // Convert and write as ICO
-            ICOEncoder.write(imageList, new File(filePath.replace(".png", ".ico")));
+            for (String i : extensionName) {
+                if (filePath.contains(i)) {
+                    //  导出图像
+                    ICOEncoder.write(resizeImage(image, sizeNumber[1]), new File(filePath.replace(i, "-" + sizeNumber[1] + "px" + ".ico")));
+                }
+            }
+
         } catch (IOException e) {
             System.out.println("文件读写异常");
         }
     }
 
-    private static BufferedImage resizeImage(BufferedImage originalImage) {
-        BufferedImage resizedImage = new BufferedImage(256, 256, BufferedImage.TYPE_INT_ARGB);
-        resizedImage.getGraphics().drawImage(originalImage.getScaledInstance(256, 256, BufferedImage.SCALE_SMOOTH), 0, 0, null);
+    private static BufferedImage resizeImage(BufferedImage originalImage, int size) {
+        BufferedImage resizedImage = new BufferedImage(size, size, BufferedImage.TYPE_INT_ARGB);
+        resizedImage.getGraphics().drawImage(originalImage.getScaledInstance(size, size, BufferedImage.SCALE_SMOOTH), 0, 0, null);
         return resizedImage;
     }
 
